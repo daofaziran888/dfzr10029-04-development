@@ -60,6 +60,18 @@ class DimensionEntry(BaseModel):
     field_6: str | None = None  # 排序规则
     field_7: str | None = None  # 维度状态
 
+class DimensionMemberEntry(BaseModel):
+    """数据维度成员映射表明细结构。"""
+
+    field_0: str | None = None  # 映射编号
+    field_1: str | None = None  # 映射版本
+    field_2: str | None = None  # 维度编号
+    field_3: str | None = None  # 关联数据集
+    field_4: str | None = None  # 来源输入
+    field_5: str | None = None  # 成员名称
+    field_6: str | None = None  # 层级路径
+    field_7: str | None = None  # 维度版本
+
 class DatasetEntry(BaseModel):
     """分析数据集明细结构。"""
 

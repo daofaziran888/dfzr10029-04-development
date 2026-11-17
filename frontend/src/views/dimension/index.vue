@@ -72,6 +72,45 @@
       </form>
     </div>
 
+    <section class="member-panel" data-testid="member-panel">
+      <header class="member-panel-head">
+        <div>
+          <h3>维度成员检索</h3>
+          <p class="page-desc">按数据集与层级路径检索数据维度成员映射表，定位成员当前归属路径与被引用的维度版本（默认锁定最新生效版本）。</p>
+        </div>
+        <RouterLink class="btn" to="/dimension_member">打开映射表</RouterLink>
+      </header>
+      <form class="filter-bar" @submit.prevent="searchMembers">
+        <label class="filter-item">
+          <span>关联数据集</span>
+          <input v-model="memberQuery.dataset" data-testid="member-filter-dataset" placeholder="数据集名称或编号" />
+        </label>
+        <label class="filter-item">
+          <span>维度路径</span>
+          <input v-model="memberQuery.path" data-testid="member-filter-path" placeholder="如 华东/上海" />
+        </label>
+        <label class="filter-item">
+          <span>成员名称</span>
+          <input v-model="memberQuery.member" data-testid="member-filter-member" placeholder="成员名称关键字" />
+        </label>
+        <button class="btn primary" data-testid="member-query" type="submit">检索成员</button>
+        <button class="btn ghost" type="button" data-testid="member-reset" @click="resetMemberQuery">重置</button>
+      </form>
+      <table v-if="memberRows.length" class="data-table">
+        <thead>
+          <tr>
+            <th v-for="column in memberColumns" :key="column">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in memberRows" :key="`${row.映射编号}-${row.来源输入}`" :class="{ 'conflict-row': row.abnormal }">
+            <td v-for="column in memberColumns" :key="column">{{ row[column] ?? '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else-if="memberSearched" class="empty-state" data-testid="member-empty">当前条件下没有定位到维度成员</p>
+    </section>
+
     <footer class="page-foot">
       <span>共 {{ total }} 条维度管理记录</span>
       <span v-if="errorMessage" class="error-text">{{ errorMessage }}</span>
@@ -100,6 +139,11 @@ const filterFields = columns.slice(0, 3)
 const showCreate = ref(false)
 const creating = ref(false)
 const createValues = ref<Record<string, string>>({})
+
+const memberColumns = ['映射版本', '关联数据集', '来源输入', '成员名称', '层级路径', '默认取值', '维度版本', '冲突标记']
+const memberQuery = ref<Record<string, string>>({ dataset: '', path: '', member: '' })
+const memberRows = ref<Row[]>([])
+const memberSearched = ref(false)
 const stats = computed(() => [
   { label: metricNames[0], value: total.value },
   { label: metricNames[1], value: rows.value.filter((row) => row.status === statuses[1]).length },
@@ -184,5 +228,54 @@ async function reload() {
   }
 }
 
+async function searchMembers() {
+  errorMessage.value = ''
+  memberSearched.value = true
+  const params = new URLSearchParams()
+  for (const [key, value] of Object.entries(memberQuery.value)) {
+    if (value.trim()) params.set(key, value.trim())
+  }
+  try {
+    const response = await request(`/api/dimension-member/lookup?${params.toString()}`)
+    if (!response.ok) throw new Error('维度成员检索失败')
+    memberRows.value = await response.json()
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : '维度成员检索失败'
+    memberRows.value = []
+  }
+}
+
+function resetMemberQuery() {
+  memberQuery.value = { dataset: '', path: '', member: '' }
+  memberRows.value = []
+  memberSearched.value = false
+}
+
 onMounted(reload)
 </script>
+
+<style scoped>
+.member-panel {
+  margin-top: 18px;
+  background: #fff;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.member-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.member-panel-head h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+.conflict-row {
+  background: #fffbfa;
+}
+.conflict-row td {
+  color: #b42318;
+}
+</style>

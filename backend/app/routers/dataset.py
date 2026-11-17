@@ -65,6 +65,21 @@ def export_entries(
         headers={"Content-Disposition": 'attachment; filename="dataset.csv"'})
 
 
+@router.get("/member-mappings")
+def list_member_mappings(
+    dataset: str | None = Query(default=None, description="数据集名称或编号，缺省按全部数据集"),
+    path: str | None = Query(default=None, description="层级路径关键字"),
+    member: str | None = Query(default=None, description="成员名称关键字"),
+    version: str | None = Query(default=None, description="映射版本，缺省锁定最新已确认版本"),
+    source: str | None = Query(default=None, description="来源输入：分析维度 / 关联数据集"),
+) -> list[dict]:
+    """跨领域模块读取维度成员映射表：数据集侧按同一版本回查成员归属路径。"""
+    from app.services.dimension_member import service as member_service
+
+    return member_service.lookup_members(
+        dataset=dataset, path=path, member_name=member, version=version, source=source)
+
+
 @router.get("/{entry_id}", response_model=dict)
 def get_entry(entry_id: int) -> dict:
     """读取单条分析数据集明细；不存在时给出可读的错误说明。"""

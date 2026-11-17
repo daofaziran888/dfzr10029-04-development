@@ -62,4 +62,10 @@ class DimensionService:
         entry["status"] = target
         entry["pending"] = target != STATUS_ORDER[-1]
         entry["abnormal"] = action in NEGATIVE_ACTIONS
+        # 维度分析接口在发布时持久化维度成员映射表：层级结构与数据集引用按同一版本回查。
+        # 延迟导入避免与映射表服务在模块加载阶段形成循环依赖。
+        if action == "发布维度":
+            from app.services.dimension_member import service as member_service
+
+            member_service.sync_from_dimensions(trigger="维度发布持久化")
         return entry, f"分析维度已{action}"

@@ -41,77 +41,77 @@ SEED_ROWS: dict[str, list[dict[str, Any]]] = {
   '精度位数': '指标定义样例3',
   '口径版本': '指标定义样例3'}],
     "dimension": [{'id': 1,
-  'status': '草稿',
-  'pending': True,
-  'abnormal': False,
-  '维度编号': 'DIME-0001',
-  '维度名称': '维度管理样例1',
-  '维度类型': '维度管理样例1',
-  '关联数据集': '维度管理样例1',
-  '层级结构': '维度管理样例1',
-  '默认取值': '维度管理样例1',
-  '排序规则': '维度管理样例1',
-  '维度状态': '维度管理样例1'},
- {'id': 2,
-  'status': '已定义',
-  'pending': True,
-  'abnormal': True,
-  '维度编号': 'DIME-0002',
-  '维度名称': '维度管理样例2',
-  '维度类型': '维度管理样例2',
-  '关联数据集': '维度管理样例2',
-  '层级结构': '维度管理样例2',
-  '默认取值': '维度管理样例2',
-  '排序规则': '维度管理样例2',
-  '维度状态': '维度管理样例2'},
- {'id': 3,
   'status': '已发布',
   'pending': False,
   'abnormal': False,
-  '维度编号': 'DIME-0003',
-  '维度名称': '维度管理样例3',
-  '维度类型': '维度管理样例3',
-  '关联数据集': '维度管理样例3',
-  '层级结构': '维度管理样例3',
-  '默认取值': '维度管理样例3',
-  '排序规则': '维度管理样例3',
-  '维度状态': '维度管理样例3'}],
-    "dataset": [{'id': 1,
-  'status': '待接入',
+  '维度编号': 'DIME-0001',
+  '维度名称': '区域层级维度',
+  '维度类型': '层级维度',
+  '关联数据集': '销售明细数据集',
+  '层级结构': '全国/华东/上海; 全国/华东/杭州; 全国/华北/北京',
+  '默认取值': '上海',
+  '排序规则': '层级深度升序',
+  '维度状态': '已发布'},
+ {'id': 2,
+  'status': '已发布',
+  'pending': False,
+  'abnormal': False,
+  '维度编号': 'DIME-0002',
+  '维度名称': '会员等级维度',
+  '维度类型': '层级维度',
+  '关联数据集': '会员画像数据集',
+  '层级结构': '全部会员/普通会员; 全部会员/银卡会员; 全部会员/金卡会员',
+  '默认取值': '普通会员',
+  '排序规则': '等级编码升序',
+  '维度状态': '已发布'},
+ {'id': 3,
+  'status': '草稿',
   'pending': True,
   'abnormal': False,
-  '数据集编号': 'DATA-0001',
-  '数据集名称': '数据集管理样例1',
-  '来源类型': '数据集管理样例1',
-  '字段数量': 10,
-  '行数估算': '数据集管理样例1',
-  '刷新周期': '数据集管理样例1',
-  '负责人': '数据集管理样例1',
-  '数据集状态': '数据集管理样例1'},
- {'id': 2,
-  'status': '已接入',
-  'pending': True,
-  'abnormal': True,
-  '数据集编号': 'DATA-0002',
-  '数据集名称': '数据集管理样例2',
-  '来源类型': '数据集管理样例2',
-  '字段数量': 20,
-  '行数估算': '数据集管理样例2',
-  '刷新周期': '数据集管理样例2',
-  '负责人': '数据集管理样例2',
-  '数据集状态': '数据集管理样例2'},
- {'id': 3,
+  '维度编号': 'DIME-0003',
+  '维度名称': '门店类型维度',
+  '维度类型': '普通维度',
+  '关联数据集': '渠道运营数据集',
+  '层级结构': '全部门店/直营门店; 全部门店/加盟门店',
+  '默认取值': '直营门店',
+  '排序规则': '门店编码升序',
+  '维度状态': '草稿'}],
+    "dataset": [{'id': 1,
   'status': '使用中',
   'pending': False,
   'abnormal': False,
+  '数据集编号': 'DATA-0001',
+  '数据集名称': '销售明细数据集',
+  '来源类型': '业务系统同步',
+  '字段数量': 36,
+  '行数估算': '1200万',
+  '刷新周期': '每日',
+  '负责人': '数据集管理样例1',
+  '数据集状态': '使用中'},
+ {'id': 2,
+  'status': '使用中',
+  'pending': False,
+  'abnormal': False,
+  '数据集编号': 'DATA-0002',
+  '数据集名称': '会员画像数据集',
+  '来源类型': '数据仓库加工',
+  '字段数量': 28,
+  '行数估算': '860万',
+  '刷新周期': '每周',
+  '负责人': '数据集管理样例2',
+  '数据集状态': '使用中'},
+ {'id': 3,
+  'status': '已接入',
+  'pending': True,
+  'abnormal': True,
   '数据集编号': 'DATA-0003',
-  '数据集名称': '数据集管理样例3',
-  '来源类型': '数据集管理样例3',
-  '字段数量': 30,
-  '行数估算': '数据集管理样例3',
-  '刷新周期': '数据集管理样例3',
+  '数据集名称': '渠道运营数据集',
+  '来源类型': '手工维护',
+  '字段数量': 18,
+  '行数估算': '45万',
+  '刷新周期': '每月',
   '负责人': '数据集管理样例3',
-  '数据集状态': '数据集管理样例3'}],
+  '数据集状态': '已接入'}],
     "experiment": [{'id': 1,
   'status': '草稿',
   'pending': True,
@@ -653,3 +653,92 @@ SEED_ROWS: dict[str, list[dict[str, Any]]] = {
   '审计结果': '数据审计样例3',
   '记录状态': '数据审计样例3'}]
 }
+
+
+def _build_dimension_member_seed() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """用层级解析逻辑落两版映射表：父级更换后新旧归属各自保留版本边界。
+
+    映射V1 记录历史层级（上海挂在华北下），映射V2 反映当前分析维度（上海调整到
+    华东下）。两版都保留分析维度与关联数据集两处来源输入。
+    """
+    from app.member_hierarchy import apply_conflicts, build_mapping_rows, source_signature
+
+    dimensions = [dict(row) for row in SEED_ROWS["dimension"]]
+    datasets = [dict(row) for row in SEED_ROWS["dataset"]]
+
+    historical = [dict(row) for row in dimensions]
+    historical[0]["层级结构"] = "全国/华北/上海; 全国/华东/杭州; 全国/华北/北京"
+
+    v1_versions = {
+        "DIME-0001": "DIME-0001@v1",
+        "DIME-0002": "DIME-0002@v1",
+        "DIME-0003": "DIME-0003@v1",
+    }
+    v2_versions = dict(v1_versions)
+    v2_versions["DIME-0001"] = "DIME-0001@v2"
+
+    v1_rows = build_mapping_rows(
+        historical, datasets,
+        version_label="映射V1", effective_date="2026-10-01",
+        dimension_versions=v1_versions, start_id=1, status="已归档",
+    )
+    v2_rows = build_mapping_rows(
+        dimensions, datasets,
+        version_label="映射V2", effective_date="2026-11-01",
+        dimension_versions=v2_versions, start_id=len(v1_rows) + 1,
+        baseline=v1_rows,
+    )
+    # V1 整体归档：仍被历史数据集引用的旧路径补历史引用标记，保留版本边界不覆盖。
+    for row in v1_rows:
+        row["status"] = "已归档"
+        row["pending"] = False
+    apply_conflicts(v1_rows, successor=v2_rows, effective_date="2026-11-01")
+
+    def _keys(rows: list[dict[str, Any]]) -> dict[str, str]:
+        return {
+            str(row.get("维度编号", "")).strip(): "|".join([
+                str(row.get("层级结构", "")).strip(),
+                str(row.get("关联数据集", "")).strip(),
+                str(row.get("默认取值", "")).strip(),
+            ])
+            for row in rows
+        }
+
+    version_rows = [
+        {
+            "id": 1,
+            "version_no": 1,
+            "version_label": "映射V1",
+            "source_signature": source_signature(historical, datasets),
+            "row_total": len(v1_rows),
+            "conflict_total": sum(1 for row in v1_rows if row.get("冲突标记") != "无"),
+            "effective_date": "2026-10-01",
+            "trigger": "历史版本归档",
+            "dimension_versions": {"DIME-0001": 1, "DIME-0002": 1, "DIME-0003": 1},
+            "dimension_keys": _keys(historical),
+            "status": "已归档",
+            "pending": False,
+            "abnormal": False,
+        },
+        {
+            "id": 2,
+            "version_no": 2,
+            "version_label": "映射V2",
+            "source_signature": source_signature(dimensions, datasets),
+            "row_total": len(v2_rows),
+            "conflict_total": sum(1 for row in v2_rows if row.get("冲突标记") != "无"),
+            "effective_date": "2026-11-01",
+            "trigger": "初始化持久化",
+            "dimension_versions": {"DIME-0001": 2, "DIME-0002": 1, "DIME-0003": 1},
+            "dimension_keys": _keys(dimensions),
+            "status": "生效中",
+            "pending": False,
+            "abnormal": False,
+        },
+    ]
+    return [*v1_rows, *v2_rows], version_rows
+
+
+_DIMENSION_MEMBER_ROWS, _DIMENSION_MEMBER_VERSIONS = _build_dimension_member_seed()
+SEED_ROWS["dimension_member"] = _DIMENSION_MEMBER_ROWS
+SEED_ROWS["dimension_member_version"] = _DIMENSION_MEMBER_VERSIONS

@@ -51,6 +51,7 @@ npm run dev
 | --- | --- | --- | --- |
 | 指标定义 | `metric_def` | 指标 | 指标编号、指标名称、计算公式 |
 | 维度管理 | `dimension` | 分析维度 | 维度编号、维度名称、维度类型 |
+| 维度成员映射表 | `dimension_member` | 维度成员映射 | 映射编号、映射版本、层级路径、来源输入 |
 | 数据集管理 | `dataset` | 分析数据集 | 数据集编号、数据集名称、来源类型 |
 | 分析实验 | `experiment` | 实验方案 | 方案编号、实验名称、分析数据集 |
 | OLAP查询 | `query_builder` | 查询模板 | 模板编号、模板名称、查询语句 |
@@ -74,6 +75,23 @@ npm run dev
   `backend/app/routers/<模块>.py`，业务规则在 `backend/app/services/<模块>.py`。
 - 列表接口统一返回 `{ items, total, page, size }`，动作接口统一返回 `{ ok, message }`。
 - 状态流转只允许在 `app/services` 里改，路由层不做业务判断。
+
+## 维度成员映射表
+
+分析维度的「层级结构」会与「关联数据集」一起被解析，落成 `dimension_member` 数据维度
+成员映射表，层级路径、数据集引用与被引用的维度版本来自同一份映射结果：
+
+- 解析与构建逻辑在 `app/member_hierarchy.py`（层级解析、冲突标记、来源签名均为纯函数）。
+- 映射表按版本持久化（`/api/dimension-member/sync`），分析维度执行「发布维度」时会自动
+  同步；并发提交由锁 + 来源签名去重，最终只确认一个版本。
+- 维度成员更换父级后，新版本按生效日期标记「父级变更」采用新归属，历史版本标记
+  「历史引用」保留旧归属，两个版本各自保留边界、互不覆盖。
+- 同一成员保留「分析维度」「关联数据集」两处来源输入，可通过
+  `GET /api/dimension-member/{id}/sources` 查看另一处来源。
+- 跨领域模块按同一版本回查：`GET /api/dimension-member/lookup` 与
+  `GET /api/dataset/member-mappings`，缺省锁定最新生效版本。
+- `GET /api/dimension-member/chain-check` 按调用链核对映射表与来源输入是否一致、
+  是否存在悬空数据集引用。
 
 领域：数据工程
 子方向：数据分析与数据应用
